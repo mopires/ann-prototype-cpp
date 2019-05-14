@@ -13,7 +13,6 @@ class Neuron
 
     public:
         Neuron();
-        //int getId();//tirar isso
 
         virtual void Input(float Input);
         virtual void Activation();
