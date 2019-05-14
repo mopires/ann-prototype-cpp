@@ -8,32 +8,27 @@ using namespace std;
 class Neuron
 {
     private:
-        int id;
-        
+        float Value;
+        vector<float> Weight;
 
     public:
-        Neuron(int id);
-        int getId();//tirar isso
+        Neuron();
+        //int getId();//tirar isso
 
-        virtual void Input(/*tipo de imput*/);
+        virtual void Input(float Input);
         virtual void Activation();
 
 };
 
-Neuron::Neuron(int id)
+Neuron::Neuron()
 {
-    this->id = id;
     
 }
 
-void Neuron::Input(){
-
+void Neuron::Input(float Input){
+    this->Value = Input;
 }
 
 void Neuron::Activation(){
     
-}
-
-int Neuron::getId(){
-    return this->id;
 }

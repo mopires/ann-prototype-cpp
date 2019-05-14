@@ -2,22 +2,23 @@
 #include "Neuron.hpp"
 
 typedef vector<vector<Neuron>> matrix;
+typedef vector<float> Array_Of_Float; 
 
 class Network
 {
     private:
         int NumberOfHiddenLayers;
         int NumberOfNeurons;
+        matrix network;
 
         void SetNeuronsInLayers();
-        //input functions
+        
 
     public:
         Network(int NumberOfHiddenLayers);
-        
-        void See(matrix Network);
+        //void See(matrix Network);
 
-    
+        void InputData(Array_Of_Float Data, float Output, bool Training);
 };
 
 Network::Network(int NumberOfHiddenLayers = 2)
@@ -41,13 +42,10 @@ void Network::SetNeuronsInLayers()
 
             for (int j = 0; j < NumberOfNeurons; j++)
             {
-                network[i].push_back(Neuron(j));
+                network[i].push_back(Neuron());
             }
-            
-            
-            
         }
-
+        this->network = network;
     }
     catch(std::exception ex)
     {
@@ -56,17 +54,55 @@ void Network::SetNeuronsInLayers()
     
 }
 
-void Network::See(matrix Network)
+void Network::InputData(Array_Of_Float Data, float Output = NULL, bool Training)
 {
-
-    for (int i = 0; i < this->NumberOfHiddenLayers; i++)
+    for (int i = 0; i < Data.size(); i++)
     {
-        for (int j = 0; j < this->NumberOfNeurons; j++)
+        for (size_t j = 0; j < this->network.size(); j++)
         {
-            std::cout << "Layer [" << i << "] " << "Neuron: " << Network[i][j].getId() << " | ";
+            this->network[i][j].Input(Data.at(i));
         }
-        std::cout << std::endl;
+        
+    }
+    if (!Training)
+    {
+        
+    }
+    else
+    {
+        
     }
     
-
+    
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+// void Network::See(matrix Network)
+// {
+
+//     for (int i = 0; i < this->NumberOfHiddenLayers; i++)
+//     {
+//         for (int j = 0; j < this->NumberOfNeurons; j++)
+//         {
+//             std::cout << "Layer [" << i << "] " << "Neuron: " << Network[i][j].getId() << " | ";
+//         }
+//         std::cout << std::endl;
+//     }
+    
+
+// }
+
+
+
+
+
