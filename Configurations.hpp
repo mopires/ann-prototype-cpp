@@ -1,5 +1,5 @@
 #include <iostream>
-#include <string.h>
+#include <string>
 #include <exception>
 
 using namespace std;
@@ -33,7 +33,7 @@ Configuration::Configuration(int Epochs = 500, float LearnTax = 0.03f)
     }
     catch(const std::exception& e)
     {
-        std::cout << e.what() << "\n";
+        cout << e.what() << "\n";
     }
 }
 

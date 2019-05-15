@@ -1,7 +1,9 @@
 #include <vector>
+#include <exception>
 #include "Neuron.hpp"
 
 typedef vector<vector<Neuron>> matrix;
+typedef vector<Neuron> Array_Of_Neuron;
 typedef vector<float> Array_Of_Float; 
 
 class Network
@@ -12,33 +14,37 @@ class Network
         matrix network;
 
         void SetNeuronsInLayers();
-        
+        void InitWeight();
+
+        //method's for checking data
+        int CheckIndex(int &Index, Array_Of_Neuron Layer);
 
     public:
         Network(int NumberOfHiddenLayers);
-        //void See(matrix Network);
+        void InputData(Array_Of_Float Data);
 
-        void InputData(Array_Of_Float Data, float Output, bool Training);
+        void See(matrix Network);
 };
 
 Network::Network(int NumberOfHiddenLayers = 2)
 {
     this->NumberOfHiddenLayers = NumberOfHiddenLayers;
     SetNeuronsInLayers();
+    InitWeight();
+    //See(network);
 }
 
 void Network::SetNeuronsInLayers()
 {
     try
     {
-
         matrix network(this->NumberOfHiddenLayers);
 
         for (int i = 0; i < this->NumberOfHiddenLayers; i++)
         {
             std::cout << " Layer [" << i << "]: ";
             cin >> NumberOfNeurons;
-            //vector<Neuron> neurons;
+            NumberOfNeurons++;
 
             for (int j = 0; j < NumberOfNeurons; j++)
             {
@@ -47,60 +53,83 @@ void Network::SetNeuronsInLayers()
         }
         this->network = network;
     }
-    catch(std::exception ex)
+    catch(exception ex)
     {
         std::cout << ex.what() << std::endl;
     }
     
 }
 
-void Network::InputData(Array_Of_Float Data, float Output = NULL, bool Training)
+void Network::InputData(Array_Of_Float Data)
 {
     for (int i = 0; i < Data.size(); i++)
     {
-        for (size_t j = 0; j < this->network.size(); j++)
+        for (int j = 0; j < this->network.size(); j++)
         {
             this->network[i][j].Input(Data.at(i));
+            
+            if(i == Data.size() && j == this->network.size())
+            {
+                this->network[i][j].Input(1);//BIAS
+            }
         }
-        
     }
-    if (!Training)
-    {
-        
-    }
-    else
-    {
-        
-    }
-    
+
     
     
 }
 
+void Network::InitWeight()
+{
+    Array_Of_Float weight(this->NumberOfNeurons);
 
+    for (int i = 0; i < this->NumberOfHiddenLayers; i++)
+    {   
+        for (int j = 0; j < this->network[i].size(); j++)
+        {
+            if(i == this->NumberOfHiddenLayers)
+            {
+                break;
+            }
+            else
+            {
+                weight.resize(network[i+1].size());
+                for (int k = 0; k < weight.size(); k++)
+                {
+                    weight.push_back(rand()/100.0f);
+                }
+                network[i][j].SetWeight(weight);
+                //how to free memory here?
+                weight.clear();
+                weight.resize(NULL);
+            }
+        }
+        
 
-
-
-
-
-
-
-
-
-// void Network::See(matrix Network)
-// {
-
-//     for (int i = 0; i < this->NumberOfHiddenLayers; i++)
-//     {
-//         for (int j = 0; j < this->NumberOfNeurons; j++)
-//         {
-//             std::cout << "Layer [" << i << "] " << "Neuron: " << Network[i][j].getId() << " | ";
-//         }
-//         std::cout << std::endl;
-//     }
+    }
     
 
-// }
+    
+
+}
+
+
+
+void Network::See(matrix Network)
+{
+
+    for (int i = 0; i < this->NumberOfHiddenLayers; i++)
+    {
+        for (int j = 0; j < this->NumberOfNeurons; j++)
+        {
+            std::cout << "Layer [" << i << "] ";
+            Network[i][j].getId();
+        }
+        std::cout << std::endl;
+    }
+    
+
+}
 
 
 
