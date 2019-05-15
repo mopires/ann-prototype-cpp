@@ -31,7 +31,7 @@ Network::Network(int NumberOfHiddenLayers = 2)
     this->NumberOfHiddenLayers = NumberOfHiddenLayers;
     SetNeuronsInLayers();
     InitWeight();
-    //See(network);
+    See(network);
 }
 
 void Network::SetNeuronsInLayers()
@@ -81,36 +81,57 @@ void Network::InputData(Array_Of_Float Data)
 
 void Network::InitWeight()
 {
-    Array_Of_Float weight(this->NumberOfNeurons);
+    try{
 
-    for (int i = 0; i < this->NumberOfHiddenLayers; i++)
-    {   
-        for (int j = 0; j < this->network[i].size(); j++)
-        {
-            if(i == this->NumberOfHiddenLayers)
+        Array_Of_Float weight;
+        /*
+
+            CRIAÇÃO DE PONTEIRO MALUCO
+        */
+        float *ponteiro = weight.get_allocator().allocate(this->NumberOfNeurons);
+
+        for (int i = 0; i < this->NumberOfHiddenLayers; i++)
+        {   
+            for (int j = 0; j < this->network[i].size(); j++)
             {
-                break;
-            }
-            else
-            {
-                weight.resize(network[i+1].size());
-                for (int k = 0; k < weight.size(); k++)
+                if(i == this->NumberOfHiddenLayers)
                 {
-                    weight.push_back(rand()/100.0f);
+                    break;
                 }
-                network[i][j].SetWeight(weight);
-                //how to free memory here?
-                weight.clear();
-                weight.resize(NULL);
+                else
+                {
+                    //weight.resize(network[i+1].size());
+                    for (int k = 0; k < weight.size(); k++)
+                    {
+                        weight.get_allocator().construct(&ponteiro[k], rand()/100.0f);
+                    }
+                    network[i][j].SetWeight(weight);
+                    
+                    //
+                    //
+                    //how to free the vector in the memory here?
+                    //
+                    //Erro durante execução:
+                    //double free or corruption (fasttop)
+                    //Abortado
+
+
+                    for (int k = 0; k < weight.size(); k++)
+                    {
+                        weight.get_allocator().destroy(&ponteiro[k]);
+                    }
+                    
+                    weight.get_allocator().deallocate(ponteiro, this->NumberOfNeurons);
+                }
             }
+            
+
         }
-        
-
     }
-    
-
-    
-
+    catch(exception ex)
+    {
+        cout << ex.what() << endl;
+    }
 }
 
 
