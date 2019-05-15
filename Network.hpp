@@ -86,7 +86,7 @@ void Network::InitWeight()
         Array_Of_Float weight;
         /*
 
-            CRIAÇÃO DE PONTEIRO MALUCO
+            CRIAÇÃO DE PONTEIRO
         */
         float *ponteiro = weight.get_allocator().allocate(this->NumberOfNeurons);
 
