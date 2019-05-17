@@ -1,5 +1,6 @@
 #include <vector>
 #include <exception>
+#include <time.h>
 #include "Neuron.hpp"
 
 typedef vector<vector<Neuron>> matrix;
@@ -18,12 +19,12 @@ class Network
 
         //method's for checking data
         int CheckIndex(int &Index, Array_Of_Neuron Layer);
+        void See();
 
     public:
         Network(int NumberOfHiddenLayers);
         void InputData(Array_Of_Float Data);
 
-        void See(matrix Network);
 };
 
 Network::Network(int NumberOfHiddenLayers = 2)
@@ -31,7 +32,7 @@ Network::Network(int NumberOfHiddenLayers = 2)
     this->NumberOfHiddenLayers = NumberOfHiddenLayers;
     SetNeuronsInLayers();
     InitWeight();
-    See(network);
+    See();
 }
 
 void Network::SetNeuronsInLayers()
@@ -44,11 +45,11 @@ void Network::SetNeuronsInLayers()
         {
             std::cout << " Layer [" << i << "]: ";
             cin >> NumberOfNeurons;
-            NumberOfNeurons++;
+            //NumberOfNeurons++; pq?
 
             for (int j = 0; j < NumberOfNeurons; j++)
             {
-                network[i].push_back(Neuron());
+                network[i].push_back(Neuron(j));
             }
         }
         this->network = network;
@@ -81,75 +82,58 @@ void Network::InputData(Array_Of_Float Data)
 
 void Network::InitWeight()
 {
-    try{
-
-        Array_Of_Float weight;
-        /*
-
-            CRIAÇÃO DE PONTEIRO
-        */
-        float *ponteiro = weight.get_allocator().allocate(this->NumberOfNeurons);
-
-        for (int i = 0; i < this->NumberOfHiddenLayers; i++)
-        {   
+    try
+    {
+        for (int i = 0; i < this->network.size(); i++)
+        {
             for (int j = 0; j < this->network[i].size(); j++)
             {
-                if(i == this->NumberOfHiddenLayers)
-                {
+                if (i+1 >= this->network.size()){
                     break;
                 }
                 else
                 {
-                    //weight.resize(network[i+1].size());
-                    for (int k = 0; k < weight.size(); k++)
+                    const int size = this->network[i+1].size();
+                    float weight[size];
+                    for (int k = 0; k < this->network[i+1].size(); k++)
                     {
-                        weight.get_allocator().construct(&ponteiro[k], rand()/100.0f);
+                        weight[i] = 0;
                     }
-                    network[i][j].SetWeight(weight);
+                    this->network[i][j].SetWeight(weight);
                     
-                    //
-                    //
-                    //how to free the vector in the memory here?
-                    //
-                    //Erro durante execução:
-                    //double free or corruption (fasttop)
-                    //Abortado
-
-
-                    for (int k = 0; k < weight.size(); k++)
-                    {
-                        weight.get_allocator().destroy(&ponteiro[k]);
-                    }
-                    
-                    weight.get_allocator().deallocate(ponteiro, this->NumberOfNeurons);
                 }
+                
             }
             
-
         }
+           
     }
     catch(exception ex)
     {
-        cout << ex.what() << endl;
+        cout << "Exception when setting the weights -> " << ex.what() << endl;
     }
 }
 
 
 
-void Network::See(matrix Network)
+void Network::See()
 {
-
-    for (int i = 0; i < this->NumberOfHiddenLayers; i++)
+    for (int i = 0; i < this->network.size(); i++)
     {
-        for (int j = 0; j < this->NumberOfNeurons; j++)
+        cout << "\t ====== Layer [" << i << "] ======" << endl;
+        for (int j = 0; j < this->network[i].size(); j++)
         {
-            std::cout << "Layer [" << i << "] ";
-            Network[i][j].getId();
+            cout << " Neuron -> " << this->network[i][j].getId() << endl;
+            cout << " Weights -> ";
+            for (int k = 0; k < sizeof(this->network[i][j].getW()); k++)
+            {
+                cout << this->network[i][j].getW()[k] << " - ";
+            }
+            cout << endl;
         }
-        std::cout << std::endl;
+        
     }
     
-
 }
 
 

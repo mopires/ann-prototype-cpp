@@ -12,21 +12,22 @@ class Neuron
     private:
         int id;
         float Value;
-        Array_Of_Float Weight;
+        float *Weight;
 
     public:
-        Neuron();
+        Neuron(int id);
 
         virtual void Input(float Input);
         virtual void Activation();
-        void SetWeight(Array_Of_Float Weight);
+        void SetWeight(float Weight[]);
         
-        void getId();
+        int getId();
+        float* getW();
 };
 
-Neuron::Neuron()
+Neuron::Neuron(int id)
 {
-    
+    this->id = id;
 }
 
 void Neuron::Input(float Input)
@@ -34,24 +35,21 @@ void Neuron::Input(float Input)
     this->Value = Input;
 }
 
-void Neuron::Activation()
-{
-    
-}
+void Neuron::Activation(){}
 
-void Neuron::SetWeight(Array_Of_Float Weight)
+void Neuron::SetWeight(float Weight[])
 {
     this->Weight = Weight;
 }
 
 
 
-void Neuron::getId()
+int Neuron::getId()
 {
-    cout << this->id << " W's -> ";
-    for (int i = 0; i < this->Weight.size(); i++)
-    {
-        cout << Weight.at(i) << " ";
-    }
-    
+    return id;
+}
+
+float* Neuron::getW(){
+
+    return this->Weight;
 }
