@@ -125,9 +125,9 @@ void Network::See()
         {
             cout << " Neuron -> " << this->network[i][j].getId() << endl;
             cout << " Weights -> ";
-            for (int k = 0; k < sizeof(this->network[i][j].getW()); k++)
+            for (int k = 0; k < sizeof(this->network[i][j].getWeight()); k++)
             {
-                cout << this->network[i][j].getW()[k] << " - ";
+                cout << this->network[i][j].getWeight()[k] << " - ";
             }
             cout << endl;
         }

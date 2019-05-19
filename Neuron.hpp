@@ -22,7 +22,7 @@ class Neuron
         void SetWeight(float Weight[]);
         
         int getId();
-        float* getW();
+        float* getWeight();
 };
 
 Neuron::Neuron(int id)
@@ -49,7 +49,7 @@ int Neuron::getId()
     return id;
 }
 
-float* Neuron::getW(){
+float* Neuron::getWeight(){
 
     return this->Weight;
 }
