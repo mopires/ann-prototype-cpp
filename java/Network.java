@@ -27,7 +27,7 @@ public class Network {
 
                 Neuron[] ArrayOfNeuron = new Neuron[NumberOfNeurons];
                 for (int j = 0; j < this.NumberOfNeurons; j++) {
-                    ArrayOfNeuron[j] = new Neuron(j);
+                    ArrayOfNeuron[j] = new Neuron(j);//Include BIAS
                 }
 
                 network[i] = ArrayOfNeuron;
@@ -53,10 +53,10 @@ public class Network {
 
                     for (int j = 0; j < network[i].length;j++){
 
-                        float[] weight = new float[this.network[i+1].length];
+                        double[] weight = new double[this.network[i+1].length];
 
                         for (int k = 0; k < this.network[i+1].length; k++) {
-                            weight[i] = 0.5f;
+                            weight[i] = 0.5;
                         }
                         this.network[i][j].SetWeight(weight);
                     }

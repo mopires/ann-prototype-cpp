@@ -3,8 +3,9 @@
 public class Neuron {
 
     private int id;
+    private Object Value; //Definition
 
-    private float[] Weight;
+    private double[] Weight;
 
     public  Neuron(int id){
         this.id = id;
@@ -14,12 +15,13 @@ public class Neuron {
         return this.id;
     }
 
-    public float[] GetWeight() {
+    public double[] GetWeight() {
         return this.Weight;
     }
 
-    public void SetWeight(float[] Weight) {
-        this.Weight = new float[Weight.length];
+    public void SetWeight(double[] Weight) {
+        this.Weight = new double[Weight.length];
         this.Weight = Weight;
     }
+
 }
